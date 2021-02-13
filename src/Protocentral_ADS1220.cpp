@@ -210,7 +210,7 @@ void Protocentral_ADS1220::CurrentSources_ON(void)   // added DR
 }
 
 // control register 2
-void Protocentral_ADS1220::set_VREF(int vref)    // added DR incomplete from here, only procedures added
+void Protocentral_ADS1220::set_VREF(int vref)    // added DR
 {
     m_config_reg2 &= ~REG_CONFIG2_VREF_MASK;
     m_config_reg2 |= vref;
@@ -244,7 +244,7 @@ void Protocentral_ADS1220::set_IDAC_Current(int IDACcurrent)    // added DR
 }
 
 // control register 3
-void Protocentral_ADS1220::set_IDAC1_Route(int IDAC1routing)    // added DR incomplete from here, only procedures added
+void Protocentral_ADS1220::set_IDAC1_Route(int IDAC1routing)    // added DR
 {
     m_config_reg3 &= ~REG_CONFIG3_IDAC1routing_MASK;
     m_config_reg3 |= IDAC1routing;
