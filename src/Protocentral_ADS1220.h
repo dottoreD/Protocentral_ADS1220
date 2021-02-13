@@ -38,9 +38,57 @@
 #define CONFIG_REG2_ADDRESS 0x02
 #define CONFIG_REG3_ADDRESS 0x03
 
+#define REG_CONFIG3_IDAC1routing_MASK    0xE0  // added DR, untested
+#define REG_CONFIG3_IDAC2routing_MASK    0x1C  // added DR, untested
+#define REG_CONFIG2_VREF_MASK            0xC0  // added DR, untested
+#define REG_CONFIG2_FIR_MASK             0x30  // added DR, untested
+#define REG_CONFIG2_IDACcurrent_MASK     0x07  // added DR, untested
+#define REG_CONFIG1_MODE_MASK            0x18  // added DR, untested
 #define REG_CONFIG1_DR_MASK       0xE0
 #define REG_CONFIG0_PGA_GAIN_MASK 0x0E
 #define REG_CONFIG0_MUX_MASK      0xF0
+
+#define IDAC1_disable     0x00  // added DR, untested
+#define IDAC1_AIN0        0x20  // added DR, untested
+#define IDAC1_AIN1        0x40  // added DR, untested
+#define IDAC1_AIN2        0x60  // added DR, untested
+#define IDAC1_AIN3        0x80  // added DR, untested
+#define IDAC1_REFP0       0xA0  // added DR, untested
+#define IDAC1_REFN0       0xC0  // added DR, untested
+#define IDAC1_reserved    0xE0  // added DR, untested
+
+#define IDAC2_disable     0x00  // added DR, untested
+#define IDAC2_AIN0        0x04  // added DR, untested
+#define IDAC2_AIN1        0x08  // added DR, untested
+#define IDAC2_AIN2        0x0C  // added DR, untested
+#define IDAC2_AIN3        0x10  // added DR, untested
+#define IDAC2_REFP0       0x14  // added DR, untested
+#define IDAC2_REFN0       0x18  // added DR, untested
+#define IDAC2_reserved    0x1C  // added DR, untested
+
+#define IDAC_OFF     0x00  // added DR, untested
+#define IDAC_10      0x01  // added DR, untested
+#define IDAC_50      0x02  // added DR, untested
+#define IDAC_100     0x03  // added DR, untested
+#define IDAC_250     0x04  // added DR, untested
+#define IDAC_500     0x05  // added DR, untested
+#define IDAC_1000    0x06  // added DR, untested
+#define IDAC_1500    0x07  // added DR, untested
+
+#define FIR_OFF      0x00  // added DR, untested
+#define FIR_5060     0x10  // added DR, untested
+#define FIR_50Hz     0x20  // added DR, untested
+#define FIR_60Hz     0x30  // added DR, untested
+
+#define VREF_2048       0x00  // added DR, untested
+#define VREF_REFP0      0x40  // added DR, untested
+#define VREF_AIN0       0x80  // added DR, untested
+#define VREF_ANALOG     0xC0  // added DR, untested
+
+#define MODE_NORMAL     0x00  // added DR, untested
+#define MODE_DUTYCYCLE  0x08  // added DR, untested
+#define MODE_TURBO      0x10  // added DR, untested
+#define MODE_RESERVED   0x18  // added DR, untested
 
 #define DR_20SPS    0x00
 #define DR_45SPS    0x20
@@ -109,17 +157,36 @@ private:
       int32_t Read_WaitForData();
 
       uint8_t * get_config_reg(void);
-
-      void PGA_OFF(void);
-      void PGA_ON(void);
-      void set_conv_mode_continuous(void);
-      void Single_shot_mode_ON(void);
-      void set_data_rate(int datarate);
-      void set_pga_gain(int pgagain);
-      void select_mux_channels(int channels_conf);
-      void set_conv_mode_single_shot(void);
       int32_t Read_SingleShot_WaitForData(void);
       int32_t Read_SingleShot_SingleEnded_WaitForData(uint8_t channel_no);
       int32_t Read_Data_Samples();
+
+// control register 0
+      void select_mux_channels(int channels_conf);
+      void set_pga_gain(int pgagain);
+      void PGA_OFF(void);
+      void PGA_ON(void);
+// control register 1
+      void set_data_rate(int datarate);
+	  void set_OperationMode(int OPmode);    // added DR
+//      void Single_shot_mode_ON(void);     //remarked for deletion, not used
+      void set_conv_mode_single_shot(void);
+      void set_conv_mode_continuous(void);
+      void TemperatureSensorMode_enable(void);    // added DR
+      void TemperatureSensorMode_disable(void);   // added DR
+      void CurrentSources_ON(void);       // added DR
+      void CurrentSources_OFF(void);      // added DR
+// control register 2
+	  void set_VREF(int vref);             // added DR
+	  void set_FIR_Filter(int filter);     // added DR
+      void LowSideSwitch_OPEN(void);       // added DR
+      void LowSideSwitch_CLOSED(void);        // added DR
+	  void set_IDAC_Current(int IDACcurrent);  // added DR
+// control register 3
+	  void set_IDAC1_Route(int IDAC1routing);   // added DR
+	  void set_IDAC2_Route(int IDAC2routing);   // added DR
+      void DRDYmode_default(void);       // added DR
+      void DRDYmode_DOUT(void);          // added DR
+// end control register
 
 };
